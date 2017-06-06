@@ -1,0 +1,9 @@
+spring:
+  thymeleaf:
+    cache: false
+    suffix: .jsp
+  datasource:
+    url: jdbc:mysql://localhost/is_open_there?characterEncoding=utf8
+    username: is_open_there
+    password: 1q2w3e4r
+    driver-class-name: com.mysql.jdbc.Driver
