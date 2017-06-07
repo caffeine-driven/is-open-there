@@ -20,8 +20,9 @@ public class Application extends WebMvcConfigurerAdapter {
         super.configureViewResolvers(registry);
         registry.enableContentNegotiation(new MappingJackson2JsonView());
         registry.enableContentNegotiation(new MarshallingView(new CastorMarshaller()));
+
 //        registry.viewResolver(new ThymeleafViewResolver());
-//        registry.jsp().prefix("/templates/");
+        registry.jsp().prefix("/templates/");
     }
 
     public static void main(String[] args){

@@ -7,3 +7,4 @@ spring:
     username: is_open_there
     password: 1q2w3e4r
     driver-class-name: com.mysql.jdbc.Driver
+debug: true

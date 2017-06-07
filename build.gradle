@@ -26,6 +26,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
     compile("org.springframework.boot:spring-boot-starter-web-services")
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.37'
     compile group: 'org.codehaus.castor', name: 'castor-core', version: '1.4.1'
