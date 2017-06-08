@@ -5,6 +5,7 @@ import kr.ac.jejunu.model.UpdateRequestLog;
 import kr.ac.jejunu.repository.RestaurantRepository;
 import kr.ac.jejunu.repository.UpdateRequestLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Created by ghost9087 on 07/06/2017.
  */
+@Service
 public class RestaurantServiceImpl implements RestaurantService {
     @Autowired
     private RestaurantRepository restaurantRepository;
