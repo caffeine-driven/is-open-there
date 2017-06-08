@@ -296,7 +296,11 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "user": {}
+                    "user": {
+                        "id": 4,
+                        "name": "test11",
+                        "password": "1234"
+                      }
                   }`
   
 **addUser**
@@ -322,7 +326,45 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "user": {}
+                    "user": {
+                        "id": 4,
+                        "name": "test11",
+                        "password": "1234"
+                      }
+                  }`
+                  
+**updateUser**
+----
+  사용자를 추가한다(회원가입) 
+
+* **URL**
+
+  /user/:id
+
+* **Method:**
+  
+  `PUT`
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `id=[integer]`
+   
+* **Data Params**
+  **Required:**
+  
+  `password=[string]`
+
+
+* **Success Response:**
+  * **Code:** 200 <br />
+    **Content:** `{
+                    "user": {
+                        "id": 4,
+                        "name": "test11",
+                        "password": "1234"
+                      }
                   }`
                   
 
@@ -349,5 +391,9 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "deleted": true
+                    "user": {
+                        "id": 4,
+                        "name": "test11",
+                        "password": "1234"
+                      }
                   }`
