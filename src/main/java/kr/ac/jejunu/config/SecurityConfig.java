@@ -10,7 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 /**
@@ -26,8 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private AuthenticationEntryPoint authEntryPoint;
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 
     @Bean
@@ -40,22 +41,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/index").permitAll()
-                .mvcMatchers(HttpMethod.GET, "/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
+                    .antMatchers("/css/**", "/index").permitAll()
+                    .mvcMatchers(HttpMethod.GET, "/**").permitAll()
+                    .mvcMatchers(HttpMethod.POST, "/user").permitAll()
+                    .mvcMatchers("/user/me/**").authenticated()
+                    .anyRequest().authenticated()
+                    .and()
                 .formLogin()
-                .loginPage("/user/login").permitAll()
-//                .failureUrl("/user/login-error").permitAll()
-                .and()
+                    .loginPage("/user/login").permitAll()
+                    //여기 어떻게 해결해야 함
+                    .defaultSuccessUrl("/user/me.json")
+                    .and()
                 .logout().permitAll()
-                .and()
-                .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(authEntryPoint);
+                    .and()
+                    .csrf().disable()
+                    .exceptionHandling().authenticationEntryPoint(authEntryPoint);
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 }
