@@ -7,17 +7,20 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by ghost9087 on 06/06/2017.
+ * Created by ghost9087 on 08/06/2017.
  */
 @Entity
 @Data
 @Accessors(chain = true)
-public class UpdateRequestLog {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Boolean currentStatus;
-    private Date requestedDate;
+    private String text;
+    private Date date;
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    private User writer;
     @JoinColumn(name = "restaurant_id")
     @ManyToOne
     private Restaurant restaurant;

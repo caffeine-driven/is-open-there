@@ -35,6 +35,7 @@ public class RestaurantServiceImplTest {
         public RestaurantRepository restaurantRepository() {
             return mock(RestaurantRepository.class);
         }
+
         @Bean
         public UpdateRequestLogRepository updateRequestLogRepository() {
             return mock(UpdateRequestLogRepository.class);
