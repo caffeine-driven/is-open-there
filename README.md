@@ -342,11 +342,9 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "user": {
-                        "id": 4,
-                        "name": "test11",
-                        "password": "1234"
-                      }
+                    "id": 4,
+                    "name": "test11",
+                    "password": "1234"
                   }`
                   
 
@@ -373,9 +371,7 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "user": {
-                        "id": 4,
-                        "name": "test11",
-                        "password": "1234"
-                      }
+                    "id": 4,
+                    "name": "test11",
+                    "password": "1234"
                   }`
