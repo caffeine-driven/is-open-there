@@ -20,6 +20,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public void authByUser(User user) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getName());
@@ -30,5 +33,23 @@ public class AuthServiceImpl implements AuthService {
         if (usernamePasswordAuthenticationToken.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
+    }
+
+    @Override
+    public User getAuthenticatedUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof org.springframework.security.core.userdetails.User){
+            org.springframework.security.core.userdetails.User userDetail = (org.springframework.security.core.userdetails.User)principal;
+            return userService.getUserByUsername(userDetail.getUsername());
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public void deauthorize() {
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 }

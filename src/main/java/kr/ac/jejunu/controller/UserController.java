@@ -22,20 +22,9 @@ public class UserController {
     @Autowired
     private AuthService authService;
 
-    @RequestMapping(value = {"/me"}, method = {RequestMethod.POST, RequestMethod.GET})
+    @GetMapping(value = {"/me"})
     public User selfInfo(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof org.springframework.security.core.userdetails.User){
-            org.springframework.security.core.userdetails.User userDetail = (org.springframework.security.core.userdetails.User)principal;
-            User user = userService.getUserByUsername(userDetail.getUsername());
-//            model.addAttribute("user", user);
-            return user;
-        }
-        else {
-//            model.addAttribute("user", "Anonymous");
-            return null;
-        }
+        return authService.getAuthenticatedUser();
     }
     @GetMapping("/{id}")
     public User userInfo(@PathVariable Integer id){
@@ -49,12 +38,9 @@ public class UserController {
         return userService.updateUser(user);
     }
 
+    //FIXME: 사용자 ID가 중복일때 처리!
     @PostMapping
     public User addUser(@RequestBody User user){
-        User savedUser = userService.addUser(user);
-
-        authService.authByUser(user);
-
-        return savedUser;
+        return userService.addUser(user);
     }
 }

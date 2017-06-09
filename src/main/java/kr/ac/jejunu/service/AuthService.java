@@ -7,4 +7,6 @@ import kr.ac.jejunu.model.User;
  */
 public interface AuthService {
     void authByUser(User user);
+    User getAuthenticatedUser();
+    void deauthorize();
 }
