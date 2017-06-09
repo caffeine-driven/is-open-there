@@ -10,33 +10,35 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ghost9087 on 06/06/2017.
  */
-@Controller
+@RestController
 @RequestMapping("/restaurant")
 public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
     @GetMapping
-    public void restaurantList(Model model){
-        List<Restaurant> restaurantList = restaurantService.getRestaurantList();
-
-        model.addAttribute("restaurants", restaurantList);
+    @ResponseBody
+    public List<Restaurant> restaurantList(){
+        return restaurantService.getRestaurantList();
     }
 
     @GetMapping("/{id}")
-    public void restaurant(@PathVariable Integer id, Model model){
-        Restaurant restaurant = restaurantService.getRestaurantById(id);
-
-        model.addAttribute("restaurant", restaurant);
+    @ResponseBody
+    public Restaurant restaurant(@PathVariable Integer id){
+        return restaurantService.getRestaurantById(id);
     }
 
     @PostMapping
-    public void addRestaurant(@ModelAttribute Restaurant restaurant, @RequestParam("image-file") MultipartFile file, Model model) throws IOException {
+    @ResponseBody
+    public Restaurant addRestaurant(@ModelAttribute Restaurant restaurant, @RequestParam("image-file") MultipartFile file) throws IOException {
+        //TODO: 이거 어디로 뺄것
         FileOutputStream fileOutputStream = new FileOutputStream(new File("src/main/resources/static/" + file.getOriginalFilename()));
         BufferedOutputStream outputStream = new BufferedOutputStream(fileOutputStream);
         outputStream.write(file.getBytes());
@@ -44,22 +46,23 @@ public class RestaurantController {
 
         restaurant.setImage("/"+file.getOriginalFilename());
 
-        Restaurant savedRestaurant = restaurantService.addRestaurant(restaurant);
-
-        model.addAttribute("restaurant", savedRestaurant);
+        return restaurantService.addRestaurant(restaurant);
     }
     @PutMapping("/{id}")
-    public void updateRestaurant(@ModelAttribute Restaurant restaurant, @PathVariable Integer id, Model model) throws IOException {
+    @ResponseBody
+    public Restaurant updateRestaurant(@ModelAttribute Restaurant restaurant, @PathVariable Integer id) throws IOException {
         restaurant.setId(id);
-        Restaurant updatedRestaurant = restaurantService.updateRestaurant(restaurant);
-
-        model.addAttribute("restaurant", updatedRestaurant);
+        return restaurantService.updateRestaurant(restaurant);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRestaurant(@PathVariable Integer id, Model model){
+    @ResponseBody
+    public Map<String, Boolean> deleteRestaurant(@PathVariable Integer id){
         restaurantService.deleteRestaurantById(id);
 
-        model.addAttribute("deleted", true);
+        Map<String, Boolean> resultMap = new HashMap<>();
+        resultMap.put("result", true);
+
+        return resultMap;
     }
 }

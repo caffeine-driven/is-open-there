@@ -12,8 +12,7 @@
 
 * **Success Response:**
   * **Code:** 200 <br />
-    **Content:** `{
-                    "restaurants": [
+    **Content:** `[
                       {
                         "id": 1,
                         "name": "돈내코 순두부",
@@ -30,8 +29,7 @@
                         "startTime": 0,
                         "endTime": 32400000
                       }
-                    ]
-                  }`
+                ]`
 
 **getRestaurantById**
 ----
@@ -54,14 +52,12 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "restaurant": {
                       "id": 1,
                       "name": "돈내코 순두부",
                       "open": false,
                       "image": null,
                       "startTime": 9000000,
                       "endTime": 16200000
-                    }
                   }`
   
 **addRestaurant**
@@ -81,7 +77,7 @@
   
   `name=[string]`
   
-  `image=[file]`
+  `image-file=[file]`
   
   `startTime=[time]`
   
@@ -91,14 +87,12 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "restaurant": {
-                      "id": 1,
-                      "name": "돈내코 순두부",
-                      "open": false,
-                      "image": null,
-                      "startTime": 9000000,
-                      "endTime": 16200000
-                    }
+                    "id": 4,
+                    "name": "testRestaurant1",
+                    "open": null,
+                    "image": "/facepalm.jpg",
+                    "startTime": 0,
+                    "endTime": 14400000
                   }`
                   
 **updateRestaurant**
@@ -135,14 +129,12 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "restaurant": {
-                      "id": 1,
-                      "name": "돈내코 순두부",
-                      "open": false,
-                      "image": null,
-                      "startTime": 9000000,
-                      "endTime": 16200000
-                    }
+                    "id": 4,
+                    "name": "testRestaurant2",
+                    "open": null,
+                    "image": null,
+                    "startTime": 3600000,
+                    "endTime": 18000000
                   }`
                   
 **deleteRestaurantById**
@@ -166,7 +158,7 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "deleted": true
+                    "result": true
                   }`
 
 
@@ -213,10 +205,8 @@
    
 * **Success Response:**
   * **Code:** 200 <br />
-    **Content:** `{
-                    "restaurant_id": 1,
-                    "comments": []
-                  }`
+    **Content:** `[
+                  ]`
   
 **addComment**
 ----
@@ -224,24 +214,18 @@
 
 * **URL**
 
-  /comment/:id
+  /comment/
 
 * **Method:**
   
   `POST`
-
-*  **URL Params**
-
-   **Required:**
- 
-   `id=[integer]`
 
 * **Data Params**
   **Required:**
   
   `text=[string]`
   
-  `image=[file]`
+  `restaurant-id=[integer]`
 
 
 * **Success Response:**
@@ -272,7 +256,7 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "deleted": true
+                    "result": true
                   }`
 
 
@@ -296,11 +280,9 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "user": {
-                        "id": 4,
-                        "name": "test11",
-                        "password": "1234"
-                      }
+                    "id": 1,
+                    "name": "test",
+                    "password": "1234"
                   }`
   
 **addUser**
@@ -318,7 +300,7 @@
 * **Data Params**
   **Required:**
   
-  `username=[string]`
+  `name=[string]`
   
   `password=[string]`
 
@@ -326,16 +308,14 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
-                    "user": {
-                        "id": 4,
-                        "name": "test11",
-                        "password": "1234"
-                      }
+                    "id": 1,
+                    "name": "test",
+                    "password": "1234"
                   }`
                   
 **updateUser**
 ----
-  사용자를 추가한다(회원가입) 
+  사용자 정보를 수정한다 
 
 * **URL**
 
@@ -352,6 +332,8 @@
    `id=[integer]`
    
 * **Data Params**
+  <_Content-type must be `application/x-www-form-urlencoded` _>
+
   **Required:**
   
   `password=[string]`

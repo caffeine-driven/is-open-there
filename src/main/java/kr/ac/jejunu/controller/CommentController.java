@@ -7,16 +7,16 @@ import kr.ac.jejunu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ghost9087 on 08/06/2017.
  */
-@Controller
+@RestController
 @RequestMapping("/comment")
 public class CommentController {
     @Autowired
@@ -25,29 +25,35 @@ public class CommentController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/{id}")
-    public void getCommentOfRestaurant(@PathVariable Integer restaurantId, Model model){
-        List<Comment> comments = commentService.getCommentOfRestaurant(restaurantId);
-
-        model.addAttribute("comments", comments);
-        model.addAttribute("restaurant_id", restaurantId);
+    @GetMapping("/{restaurantId}")
+    @ResponseBody
+    public List<Comment> getCommentOfRestaurant(@PathVariable Integer restaurantId){
+        return commentService.getCommentOfRestaurant(restaurantId);
     }
 
-    @PostMapping("/{id}")
-    public void addComment(@PathVariable Integer restaurantId, @ModelAttribute Comment comment, Model model){
+    @PostMapping("/{restaurantId}")
+    @ResponseBody
+    public Map<String, Boolean> addComment(@PathVariable Integer restaurantId, @ModelAttribute Comment comment){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         User user = userService.getUserByUsername(auth.getName());
 
         commentService.addCommentForRestaurant(comment, user, restaurantId);
 
-        model.addAttribute("result", true);
+        Map<String, Boolean> resultMap = new HashMap<>();
+        resultMap.put("result", true);
+
+        return resultMap;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable Integer commentId, Model model){
+    @ResponseBody
+    public Map<String, Boolean> deleteComment(@PathVariable Integer commentId){
         commentService.deleteComment(commentId);
 
-        model.addAttribute("deleted", true);
+        Map<String, Boolean> resultMap = new HashMap<>();
+        resultMap.put("result", true);
+
+        return resultMap;
     }
 }

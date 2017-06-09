@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by ghost9087 on 07/06/2017.
  */
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -22,40 +22,43 @@ public class UserController {
     @Autowired
     private AuthService authService;
 
-    @GetMapping(value = {"/me", ""})
-    public void selfInfo(Model model){
+    @RequestMapping(value = {"/me"}, method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public User selfInfo(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof org.springframework.security.core.userdetails.User){
             org.springframework.security.core.userdetails.User userDetail = (org.springframework.security.core.userdetails.User)principal;
             User user = userService.getUserByUsername(userDetail.getUsername());
-            model.addAttribute("user", user);
+//            model.addAttribute("user", user);
+            return user;
         }
         else {
-            model.addAttribute("user", "Anonymous");
+//            model.addAttribute("user", "Anonymous");
+            return null;
         }
     }
     @GetMapping("/{id}")
-    public void userInfo(@PathVariable Integer id, Model model){
-        User user = userService.getUserById(id);
-
-        model.addAttribute("user", user);
+    @ResponseBody
+    public User userInfo(@PathVariable Integer id){
+        return userService.getUserById(id);
     }
+
     @PutMapping("/{id}")
-    public void updateUser(@PathVariable Integer id, @ModelAttribute User user, Model model){
+    @ResponseBody
+    public User updateUser(@PathVariable Integer id, @ModelAttribute User user){
         user.setId(id);
-        User savedUser = userService.updateUser(user);
 
-        model.addAttribute("user", savedUser);
-
+        return userService.updateUser(user);
     }
 
     @PostMapping
-    public void addUser(@ModelAttribute User user, Model model){
+    @ResponseBody
+    public User addUser(@ModelAttribute User user){
         User savedUser = userService.addUser(user);
 
         authService.authByUser(user);
 
-        model.addAttribute("user", savedUser);
+        return savedUser;
     }
 }

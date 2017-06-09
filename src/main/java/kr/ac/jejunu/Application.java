@@ -2,13 +2,8 @@ package kr.ac.jejunu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.oxm.castor.CastorMarshaller;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-import org.springframework.web.servlet.view.xml.MarshallingView;
-import org.thymeleaf.spring4.view.ThymeleafView;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
 /**
  * Created by ghost9087 on 06/06/2017.
@@ -16,13 +11,11 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 @SpringBootApplication
 public class Application extends WebMvcConfigurerAdapter {
     @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        super.configureViewResolvers(registry);
-        registry.enableContentNegotiation(new MappingJackson2JsonView());
-        registry.enableContentNegotiation(new MarshallingView(new CastorMarshaller()));
-
-//        registry.viewResolver(new ThymeleafViewResolver());
-        registry.jsp().prefix("/templates/");
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
+                .allowCredentials(true);
     }
 
     public static void main(String[] args){

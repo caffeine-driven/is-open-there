@@ -2,26 +2,29 @@ package kr.ac.jejunu.controller;
 
 import kr.ac.jejunu.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
  * Created by ghost9087 on 06/06/2017.
  */
-@Controller
+@RestController
 @RequestMapping("/update-request")
 public class UpdateRequestController {
     @Autowired
     private RestaurantService restaurantService;
 
     @PostMapping
-    public void requestUpdate(@RequestParam("restaurant-id") Integer restaurantId, Model model){
+    @ResponseBody
+    public Map<String, Boolean> requestUpdate(@RequestParam("restaurant-id") Integer restaurantId){
         restaurantService.requestStatusUpdate(restaurantId);
 
-        model.addAttribute("result", true);
+        Map<String, Boolean> resultMap = new HashMap<>();
+        resultMap.put("result", true);
+
+        return resultMap;
     }
 }
