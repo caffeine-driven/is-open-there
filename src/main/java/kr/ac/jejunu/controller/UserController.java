@@ -23,7 +23,6 @@ public class UserController {
     private AuthService authService;
 
     @RequestMapping(value = {"/me"}, method = {RequestMethod.POST, RequestMethod.GET})
-    @ResponseBody
     public User selfInfo(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -39,22 +38,19 @@ public class UserController {
         }
     }
     @GetMapping("/{id}")
-    @ResponseBody
     public User userInfo(@PathVariable Integer id){
         return userService.getUserById(id);
     }
 
     @PutMapping("/{id}")
-    @ResponseBody
-    public User updateUser(@PathVariable Integer id, @ModelAttribute User user){
+    public User updateUser(@PathVariable Integer id, @RequestBody User user){
         user.setId(id);
 
         return userService.updateUser(user);
     }
 
     @PostMapping
-    @ResponseBody
-    public User addUser(@ModelAttribute User user){
+    public User addUser(@RequestBody User user){
         User savedUser = userService.addUser(user);
 
         authService.authByUser(user);

@@ -1,5 +1,6 @@
 package kr.ac.jejunu.service;
 
+import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.model.Comment;
 import kr.ac.jejunu.model.Restaurant;
 import kr.ac.jejunu.model.User;
@@ -8,12 +9,19 @@ import kr.ac.jejunu.repository.RestaurantRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsEmptyCollection.emptyCollectionOf;
+
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -58,6 +66,8 @@ public class CommentServiceImplTest {
     public void setUp() throws Exception {
         mockRestaurant = mock(Restaurant.class);
         mockUser = mock(User.class);
+        Integer mockRestaurantId = 1;
+        when(mockRestaurant.getId()).thenReturn(mockRestaurantId);
         when(restaurantRepository.findOne(anyInt())).thenReturn(mockRestaurant);
     }
 
@@ -72,20 +82,17 @@ public class CommentServiceImplTest {
 
     @Test
     public void testAddCommentForRestaurant() throws Exception {
-        Integer mockRestaurantId = 1;
-        when(mockRestaurant.getId()).thenReturn(mockRestaurantId);
-
         Comment comment = mock(Comment.class);
 
         sut.addCommentForRestaurant(comment, mockUser, mockRestaurant.getId());
 
-        verify(restaurantRepository, times(1)).findOne(mockRestaurantId);
+        verify(restaurantRepository, times(1)).findOne(mockRestaurant.getId());
         verify(comment, times(1)).setRestaurant(mockRestaurant);
         verify(comment, times(1)).setWriter(mockUser);
         verify(commentRepository, times(1)).save(comment);
     }
 
-    @Test
+    @Test(expected = RestaurantNotExistException.class)
     public void testAddCommentForNonExistRestaurant() throws Exception {
         Integer mockRestaurantId = 999;
         when(restaurantRepository.findOne(mockRestaurantId)).thenReturn(null);
@@ -99,5 +106,17 @@ public class CommentServiceImplTest {
         verify(comment, times(0)).setRestaurant(mockRestaurant);
         verify(comment, times(0)).setWriter(mockUser);
         verify(commentRepository, times(0)).save(comment);
+    }
+    @Test
+    public void testGetEmptyCommentList() throws Exception{
+        Integer restaurantId = mockRestaurant.getId();
+        when(commentRepository.findCommentsByRestaurantId(restaurantId)).then(invocation -> {
+            throw new InvalidDataAccessResourceUsageException("no comment for restaurant");
+        });
+
+        List<Comment> comments = sut.getCommentOfRestaurant(restaurantId);
+
+        assertThat(comments, emptyCollectionOf(Comment.class));
+        verify(commentRepository, times(1)).findCommentsByRestaurantId(restaurantId);
     }
 }

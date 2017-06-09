@@ -1,13 +1,16 @@
 package kr.ac.jejunu.service;
 
+import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.model.Comment;
 import kr.ac.jejunu.model.Restaurant;
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.repository.CommentRepository;
 import kr.ac.jejunu.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,11 +25,11 @@ public class CommentServiceImpl implements CommentService {
     private RestaurantRepository restaurantRepository;
 
     @Override
-    public void addCommentForRestaurant(Comment comment, User user, Integer restaurantId) {
+    public void addCommentForRestaurant(Comment comment, User user, Integer restaurantId) throws RestaurantNotExistException {
         Restaurant restaurant = restaurantRepository.findOne(restaurantId);
 
         if(restaurant == null || user == null)
-            return;
+            throw new RestaurantNotExistException();
 
         comment.setWriter(user);
         comment.setRestaurant(restaurant);
@@ -36,7 +39,15 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getCommentOfRestaurant(Integer restaurantId) {
-        return commentRepository.findCommentsByRestaurantId(restaurantId);
+        List<Comment> comments = null;
+        try {
+             comments = commentRepository.findCommentsByRestaurantId(restaurantId);
+        }
+        catch (InvalidDataAccessResourceUsageException e){
+            comments = new ArrayList<>();
+        }
+
+        return comments;
     }
 
     @Override

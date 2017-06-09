@@ -1,5 +1,6 @@
 package kr.ac.jejunu.service;
 
+import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.model.Restaurant;
 import kr.ac.jejunu.model.UpdateRequestLog;
 import kr.ac.jejunu.repository.RestaurantRepository;
@@ -63,6 +64,14 @@ public class RestaurantServiceImplTest {
         when(updateRequestLogRepository.findUpdateRequestLogsByRestaurantIdAndCurrentStatus(anyInt(), anyBoolean())).thenReturn(mockList);
         when(testRestaurant.getId()).thenReturn(1);
         when(testRestaurant.isOpen()).thenReturn(false);
+    }
+
+    @Test(expected = RestaurantNotExistException.class)
+    public void testUpdateRequestForRestaurantNonExist() throws Exception {
+        reset(restaurantRepository);
+        when(restaurantRepository.findOne(anyInt())).thenReturn(null);
+
+        sut.requestStatusUpdate(testRestaurant.getId());
     }
 
     @Test

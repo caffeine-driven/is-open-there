@@ -1,5 +1,6 @@
 package kr.ac.jejunu.controller;
 
+import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,7 @@ public class UpdateRequestController {
     private RestaurantService restaurantService;
 
     @PostMapping
-    @ResponseBody
-    public Map<String, Boolean> requestUpdate(@RequestParam("restaurant-id") Integer restaurantId){
+    public Map<String, Boolean> requestUpdate(@RequestParam("restaurant-id") Integer restaurantId) throws RestaurantNotExistException {
         restaurantService.requestStatusUpdate(restaurantId);
 
         Map<String, Boolean> resultMap = new HashMap<>();

@@ -24,19 +24,16 @@ public class RestaurantController {
     private RestaurantService restaurantService;
 
     @GetMapping
-    @ResponseBody
     public List<Restaurant> restaurantList(){
         return restaurantService.getRestaurantList();
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
     public Restaurant restaurant(@PathVariable Integer id){
         return restaurantService.getRestaurantById(id);
     }
 
     @PostMapping
-    @ResponseBody
     public Restaurant addRestaurant(@ModelAttribute Restaurant restaurant, @RequestParam("image-file") MultipartFile file) throws IOException {
         //TODO: 이거 어디로 뺄것
         FileOutputStream fileOutputStream = new FileOutputStream(new File("src/main/resources/static/" + file.getOriginalFilename()));
@@ -48,15 +45,14 @@ public class RestaurantController {
 
         return restaurantService.addRestaurant(restaurant);
     }
+
     @PutMapping("/{id}")
-    @ResponseBody
-    public Restaurant updateRestaurant(@ModelAttribute Restaurant restaurant, @PathVariable Integer id) throws IOException {
+    public Restaurant updateRestaurant(@RequestBody Restaurant restaurant, @PathVariable Integer id) throws IOException {
         restaurant.setId(id);
         return restaurantService.updateRestaurant(restaurant);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseBody
     public Map<String, Boolean> deleteRestaurant(@PathVariable Integer id){
         restaurantService.deleteRestaurantById(id);
 

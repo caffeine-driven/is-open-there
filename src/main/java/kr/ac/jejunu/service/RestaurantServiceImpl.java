@@ -1,5 +1,6 @@
 package kr.ac.jejunu.service;
 
+import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.model.Restaurant;
 import kr.ac.jejunu.model.UpdateRequestLog;
 import kr.ac.jejunu.repository.RestaurantRepository;
@@ -23,10 +24,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     private Integer requiredForToggle = 3;
 
     @Override
-    public void requestStatusUpdate(Integer restaurantId) {
+    public void requestStatusUpdate(Integer restaurantId) throws RestaurantNotExistException {
         Date currentTime = new Date();
 
         Restaurant restaurant = restaurantRepository.findOne(restaurantId);
+
+        if (restaurant == null)
+            throw new RestaurantNotExistException();
 
         List<UpdateRequestLog> logs = updateRequestLogRepository.findUpdateRequestLogsByRestaurantIdAndCurrentStatus(restaurantId, restaurant.isOpen());
 

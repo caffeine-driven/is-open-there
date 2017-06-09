@@ -1,5 +1,6 @@
 package kr.ac.jejunu.controller;
 
+import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.model.Comment;
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.service.CommentService;
@@ -26,14 +27,12 @@ public class CommentController {
     private UserService userService;
 
     @GetMapping("/{restaurantId}")
-    @ResponseBody
     public List<Comment> getCommentOfRestaurant(@PathVariable Integer restaurantId){
         return commentService.getCommentOfRestaurant(restaurantId);
     }
 
     @PostMapping("/{restaurantId}")
-    @ResponseBody
-    public Map<String, Boolean> addComment(@PathVariable Integer restaurantId, @ModelAttribute Comment comment){
+    public Map<String, Boolean> addComment(@PathVariable Integer restaurantId, @RequestBody Comment comment) throws RestaurantNotExistException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         User user = userService.getUserByUsername(auth.getName());
@@ -47,7 +46,6 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseBody
     public Map<String, Boolean> deleteComment(@PathVariable Integer commentId){
         commentService.deleteComment(commentId);
 
