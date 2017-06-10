@@ -307,6 +307,24 @@
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `[
+                    {
+                        "id": 1,
+                        "text": "test comment",
+                        "date": 1497088114000,
+                        "writer": {
+                          "id": 1,
+                          "name": "test",
+                          "password": "12345"
+                        },
+                        "restaurant": {
+                          "id": 4,
+                          "name": "testRestaurant2",
+                          "open": false,
+                          "image": "/IMG_0052.JPG",
+                          "startTime": "10:00",
+                          "endTime": "14:00"
+                        }
+                      }
                   ]`
   
 **addComment**
