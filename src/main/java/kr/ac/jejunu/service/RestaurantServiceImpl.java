@@ -1,11 +1,13 @@
 package kr.ac.jejunu.service;
 
+import kr.ac.jejunu.exceptions.ObjectDuplicatedException;
 import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.model.Restaurant;
 import kr.ac.jejunu.model.UpdateRequestLog;
 import kr.ac.jejunu.repository.RestaurantRepository;
 import kr.ac.jejunu.repository.UpdateRequestLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -59,12 +61,28 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant addRestaurant(Restaurant restaurant) {
-        return restaurantRepository.save(restaurant);
+        try {
+            return restaurantRepository.save(restaurant);
+        } catch (DataIntegrityViolationException e) {
+            throw new ObjectDuplicatedException("duplicated name on restaurant");
+        }
     }
 
     @Override
     public Restaurant updateRestaurant(Restaurant restaurant) {
-        return restaurantRepository.save(restaurant);
+        Restaurant originalRestaurant = restaurantRepository.findOne(restaurant.getId());
+
+        originalRestaurant.setName(
+                restaurant.getName() == null ? originalRestaurant.getName() : restaurant.getName()
+        );
+        originalRestaurant.setStartTime(
+                restaurant.getStartTime() == null ? originalRestaurant.getStartTime() : restaurant.getStartTime()
+        );
+        originalRestaurant.setEndTime(
+                restaurant.getEndTime() == null ? originalRestaurant.getEndTime() : restaurant.getEndTime()
+        );
+
+        return restaurantRepository.save(originalRestaurant);
     }
 
     @Override

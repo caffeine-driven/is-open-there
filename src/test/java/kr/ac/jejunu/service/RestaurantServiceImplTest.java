@@ -1,5 +1,6 @@
 package kr.ac.jejunu.service;
 
+import kr.ac.jejunu.exceptions.ObjectDuplicatedException;
 import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.model.Restaurant;
 import kr.ac.jejunu.model.UpdateRequestLog;
@@ -12,11 +13,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
 
 /**
@@ -96,6 +101,42 @@ public class RestaurantServiceImplTest {
         verify(restaurantRepository, times(1)).save(any(Restaurant.class));
         verify(updateRequestLogRepository, times(1)).findUpdateRequestLogsByRestaurantIdAndCurrentStatus(testRestaurant.getId(), testRestaurant.isOpen());
         verify(updateRequestLogRepository, times(1)).save(any(UpdateRequestLog.class));
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+        Integer restaurantId = 1;
+        Restaurant restaurant = new Restaurant();
+        restaurant.setOpen(false);
+        restaurant.setId(restaurantId);
+        restaurant.setImage("/static/test/test-img.jpg");
+        restaurant.setName("test restaurant");
+        restaurant.setStartTime(new GregorianCalendar(0, 0, 0, 9, 30));
+        restaurant.setEndTime(new GregorianCalendar(0, 0, 0, 18, 30));
+
+        Restaurant restaurantForUpdate = new Restaurant();
+        restaurantForUpdate.setId(restaurantId);
+        restaurantForUpdate.setName("blahblah");
+
+        when(restaurantRepository.findOne(restaurantId)).thenReturn(restaurant);
+        when(restaurantRepository.save(any(Restaurant.class))).then(invocation -> invocation.getArgument(0));
+
+        Restaurant updatedRestaurant = sut.updateRestaurant(restaurantForUpdate);
+
+        assertThat(updatedRestaurant.getId(), is(restaurantId));
+        assertThat(updatedRestaurant.getName(), is(restaurantForUpdate.getName()));
+        assertThat(updatedRestaurant.isOpen(), is(restaurant.isOpen()));
+        assertThat(updatedRestaurant.getImage(), is(restaurant.getImage()));
+        assertThat(updatedRestaurant.getStartTime(), is(restaurant.getStartTime()));
+        assertThat(updatedRestaurant.getEndTime(), is(restaurant.getEndTime()));
+    }
+
+    @Test(expected = ObjectDuplicatedException.class)
+    public void testAddRestaurantWithDuplicatedName() throws Exception {
+        when(restaurantRepository.save(any(Restaurant.class))).thenThrow(DataIntegrityViolationException.class);
+        Restaurant mockRestaurant = mock(Restaurant.class);
+
+        sut.addRestaurant(mockRestaurant);
     }
 
     @After
