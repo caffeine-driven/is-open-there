@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
     private RestaurantRepository restaurantRepository;
 
     @Override
-    public void addCommentForRestaurant(Comment comment, User user, Integer restaurantId) {
+    public void addCommentForRestaurant(@NotNull Comment comment, @NotNull User user, @NotNull Integer restaurantId) {
         Restaurant restaurant = restaurantRepository.findOne(restaurantId);
 
         if(restaurant == null || user == null)
@@ -33,6 +35,7 @@ public class CommentServiceImpl implements CommentService {
 
         comment.setWriter(user);
         comment.setRestaurant(restaurant);
+        comment.setDate(new Date());
 
         commentRepository.save(comment);
     }
