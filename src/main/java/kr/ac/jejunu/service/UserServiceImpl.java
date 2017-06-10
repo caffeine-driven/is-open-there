@@ -1,8 +1,10 @@
 package kr.ac.jejunu.service;
 
+import kr.ac.jejunu.exceptions.ObjectDuplicatedException;
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User addUser(User user) {
-        return saveUser(user);
+        try {
+            return saveUser(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new ObjectDuplicatedException("username aleady exist");
+        }
     }
 
     @Override

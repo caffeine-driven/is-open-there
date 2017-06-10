@@ -1,5 +1,6 @@
 package kr.ac.jejunu.service;
 
+import kr.ac.jejunu.exceptions.ObjectDuplicatedException;
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.repository.UserRepository;
 import org.junit.Before;
@@ -8,15 +9,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.mockito.ArgumentMatchers.any;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
@@ -78,6 +78,14 @@ public class UserServiceImplTest {
         assertThat(savedUser.getPassword(), is(fakePassword));
         verify(userRepository, times(1)).save(user);
         verify(passwordEncoder, times(1)).encode(passwordInPlainText);
+    }
+
+    @Test(expected = ObjectDuplicatedException.class)
+    public void testCreateUserWithDuplicatedUserName() throws Exception {
+        User user = mock(User.class);
+        when(userRepository.save(user)).thenThrow(DataIntegrityViolationException.class);
+
+        sut.addUser(user);
     }
 
     @Test
