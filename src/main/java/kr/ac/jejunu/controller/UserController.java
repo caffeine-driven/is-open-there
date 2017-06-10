@@ -4,10 +4,6 @@ import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.service.AuthService;
 import kr.ac.jejunu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -31,6 +27,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    //FIXME: 로그인된 사용자만 변경되도록 변경
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Integer id, @RequestBody User user){
         user.setId(id);

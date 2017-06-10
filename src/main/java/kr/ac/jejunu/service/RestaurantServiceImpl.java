@@ -26,7 +26,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private Integer requiredForToggle = 3;
 
     @Override
-    public void requestStatusUpdate(Integer restaurantId) throws RestaurantNotExistException {
+    public void requestStatusUpdate(Integer restaurantId) {
         Date currentTime = new Date();
 
         Restaurant restaurant = restaurantRepository.findOne(restaurantId);
@@ -62,6 +62,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant addRestaurant(Restaurant restaurant) {
         try {
+            restaurant.setOpen(false);
             return restaurantRepository.save(restaurant);
         } catch (DataIntegrityViolationException e) {
             throw new ObjectDuplicatedException("duplicated name on restaurant");

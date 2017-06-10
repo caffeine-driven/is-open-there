@@ -1,6 +1,5 @@
 package kr.ac.jejunu.controller;
 
-import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +21,7 @@ public class UpdateRequestController {
     private RestaurantService restaurantService;
 
     @PostMapping
-    public Map<String, Boolean> requestUpdate(@RequestBody Map<String, Integer> requestBody) throws RestaurantNotExistException {
+    public Map<String, Boolean> requestUpdate(@RequestBody Map<String, Integer> requestBody) {
         Integer restaurantId = requestBody.get("restaurant-id");
         restaurantService.requestStatusUpdate(restaurantId);
 

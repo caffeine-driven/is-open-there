@@ -25,7 +25,7 @@ public class CommentServiceImpl implements CommentService {
     private RestaurantRepository restaurantRepository;
 
     @Override
-    public void addCommentForRestaurant(Comment comment, User user, Integer restaurantId) throws RestaurantNotExistException {
+    public void addCommentForRestaurant(Comment comment, User user, Integer restaurantId) {
         Restaurant restaurant = restaurantRepository.findOne(restaurantId);
 
         if(restaurant == null || user == null)
