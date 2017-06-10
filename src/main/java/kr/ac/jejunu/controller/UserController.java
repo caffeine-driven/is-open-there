@@ -27,15 +27,15 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    //FIXME: 로그인된 사용자만 변경되도록 변경
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable Integer id, @RequestBody User user){
-        user.setId(id);
+    @PutMapping
+    public User updateUser(@RequestBody User user) {
+        User originalUser = authService.getAuthenticatedUser();
+
+        user.setId(originalUser.getId());
 
         return userService.updateUser(user);
     }
 
-    //FIXME: 사용자 ID가 중복일때 처리!
     @PostMapping
     public User addUser(@RequestBody User user){
         return userService.addUser(user);
