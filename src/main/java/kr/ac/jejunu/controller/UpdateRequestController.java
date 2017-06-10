@@ -3,7 +3,10 @@ package kr.ac.jejunu.controller;
 import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +22,8 @@ public class UpdateRequestController {
     private RestaurantService restaurantService;
 
     @PostMapping
-    public Map<String, Boolean> requestUpdate(@RequestParam("restaurant-id") Integer restaurantId) throws RestaurantNotExistException {
+    public Map<String, Boolean> requestUpdate(@RequestBody Map<String, Integer> requestBody) throws RestaurantNotExistException {
+        Integer restaurantId = requestBody.get("restaurant-id");
         restaurantService.requestStatusUpdate(restaurantId);
 
         Map<String, Boolean> resultMap = new HashMap<>();

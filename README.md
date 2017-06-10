@@ -73,6 +73,9 @@
   `POST`
 
 * **Data Params**
+
+  <_이미지가 필드에 존재하기 때문에 반드시 form-data로 보낼것_>
+  
   **Required:**
   
   `name=[string]`
@@ -95,6 +98,31 @@
                     "endTime": 14400000
                   }`
                   
+* **Error Response:**
+
+  <_인증되지 않았을때_>
+
+  * **Code:** 401 UNAUTHORIZED
+    **Content:** `{
+                    "timestamp": 1497081723425,
+                    "status": 401,
+                    "error": "Unauthorized",
+                    "message": "Full authentication is required to access this resource",
+                    "path": "/restaurant"
+                  }`
+
+  <_특정 필드가 없거나 이름이 중복되었을때_>
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{
+                    "timestamp": 1497081699902,
+                    "status": 400,
+                    "error": "Bad Request",
+                    "exception": "kr.ac.jejunu.exceptions.ObjectDuplicatedException",
+                    "message": "object duplicated",
+                    "path": "/restaurant"
+                  }`
+                  
 **updateRestaurant**
 ----
   해당 ID를 가진 식당의 정보를 수정한다.
@@ -114,18 +142,15 @@
    `id=[integer]`
 
 * **Data Params**
-    
-  <_Content-type must be `application/x-www-form-urlencoded` _>
-  
   **Required:**
+  `
+  {
+  	"name":[string],
+  	"startTime": [string],
+  	"endTime": [string]"
+  }
+  `  
   
-  `name=[string]`
-  
-  `startTime=[time]`
-  
-  `endTime=[time]`
-
-
 * **Success Response:**
   * **Code:** 200 <br />
     **Content:** `{
@@ -136,7 +161,43 @@
                     "startTime": 3600000,
                     "endTime": 18000000
                   }`
-                  
+* **Error Response:**
+
+  <_인증되지 않았을때_>
+
+  * **Code:** 401 UNAUTHORIZED
+    **Content:** `{
+                    "timestamp": 1497081723425,
+                    "status": 401,
+                    "error": "Unauthorized",
+                    "message": "Full authentication is required to access this resource",
+                    "path": "/restaurant"
+                  }`
+
+  <_특정 필드가 없거나 이름이 중복되었을때_>
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{
+                    "timestamp": 1497081699902,
+                    "status": 400,
+                    "error": "Bad Request",
+                    "exception": "kr.ac.jejunu.exceptions.ObjectDuplicatedException",
+                    "message": "object duplicated",
+                    "path": "/restaurant"
+                  }`
+
+  <_대상 식당이 존재하지 않을때_>
+
+  * **Code:** 404 NOT FOUND<br />
+    **Content:** `{
+                    "timestamp": 1497083324731,
+                    "status": 404,
+                    "error": "Not Found",
+                    "exception": "kr.ac.jejunu.exceptions.RestaurantNotExistException",
+                    "message": "restaurant not exist",
+                    "path": "/restaurant/99"
+                  }`
+                                    
 **deleteRestaurantById**
 ----
   해당 ID를 가진 식당을 삭제한다 
@@ -161,7 +222,19 @@
                     "result": true
                   }`
 
+* **Error Response:**
 
+  <_인증되지 않았을때_>
+
+  * **Code:** 401 UNAUTHORIZED
+    **Content:** `{
+                    "timestamp": 1497081723425,
+                    "status": 401,
+                    "error": "Unauthorized",
+                    "message": "Full authentication is required to access this resource",
+                    "path": "/restaurant"
+                  }`
+                  
 **requestUpdate**
 ----
   식당 영업정보 변경(Toggle)을 요청한다 
@@ -177,7 +250,11 @@
 * **Data Params**
   **Required:**
   
-  `restaurant-id=[integer]`
+  `
+  {
+    restaurant-id:[integer]
+  }
+  `
 
 
 * **Success Response:**
@@ -185,7 +262,31 @@
     **Content:** `{
                     "result": true
                   }`
-                  
+* **Error Response:**
+
+  <_인증되지 않았을때_>
+
+  * **Code:** 401 UNAUTHORIZED
+    **Content:** `{
+                    "timestamp": 1497081723425,
+                    "status": 401,
+                    "error": "Unauthorized",
+                    "message": "Full authentication is required to access this resource",
+                    "path": "/restaurant"
+                  }`
+
+  <_대상 식당이 존재하지 않을때_>
+
+  * **Code:** 404 NOT FOUND<br />
+    **Content:** `{
+                    "timestamp": 1497083324731,
+                    "status": 404,
+                    "error": "Not Found",
+                    "exception": "kr.ac.jejunu.exceptions.RestaurantNotExistException",
+                    "message": "restaurant not exist",
+                    "path": "/restaurant/99"
+                  }`
+                                    
 **getCommentOfRestaurant**
 ----
   해당 식당의 댓글목록을 가져온다.
@@ -234,6 +335,31 @@
                     "result": true
                   }`
                   
+* **Error Response:**
+
+  <_인증되지 않았을때_>
+
+  * **Code:** 401 UNAUTHORIZED
+    **Content:** `{
+                    "timestamp": 1497081723425,
+                    "status": 401,
+                    "error": "Unauthorized",
+                    "message": "Full authentication is required to access this resource",
+                    "path": "/restaurant"
+                  }
+                  
+  <_대상 식당이 존재하지 않을때_>
+
+  * **Code:** 404 NOT FOUND<br />
+    **Content:** `{
+                    "timestamp": 1497083324731,
+                    "status": 404,
+                    "error": "Not Found",
+                    "exception": "kr.ac.jejunu.exceptions.RestaurantNotExistException",
+                    "message": "restaurant not exist",
+                    "path": "/restaurant/99"
+                  }`
+
 
 **deleteCommentById**
 ----
@@ -259,7 +385,19 @@
                     "result": true
                   }`
 
+* **Error Response:**
 
+  <_인증되지 않았을때_>
+
+  * **Code:** 401 UNAUTHORIZED
+    **Content:** `{
+                    "timestamp": 1497081723425,
+                    "status": 401,
+                    "error": "Unauthorized",
+                    "message": "Full authentication is required to access this resource",
+                    "path": "/restaurant"
+                  }`
+                  
 **getUserById**
 ----
   사용자 정보를 받아온다
@@ -284,7 +422,19 @@
                     "name": "test",
                     "password": "1234"
                   }`
-  
+* **Error Response:**
+
+  <_인증되지 않았을때_>
+
+  * **Code:** 401 UNAUTHORIZED
+    **Content:** `{
+                    "timestamp": 1497081723425,
+                    "status": 401,
+                    "error": "Unauthorized",
+                    "message": "Full authentication is required to access this resource",
+                    "path": "/restaurant"
+                  }`
+
 **addUser**
 ----
   사용자를 추가한다(회원가입) 
@@ -313,30 +463,38 @@
                     "password": "1234"
                   }`
                   
+* **Error Response:**
+
+  <_특정 필드가 없거나 이름이 중복되었을때_>
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{
+                    "timestamp": 1497081699902,
+                    "status": 400,
+                    "error": "Bad Request",
+                    "exception": "kr.ac.jejunu.exceptions.ObjectDuplicatedException",
+                    "message": "object duplicated",
+                    "path": "/restaurant"
+                  }`
+ 
 **updateUser**
 ----
   사용자 정보를 수정한다 
 
 * **URL**
 
-  /user/:id
+  /user
 
 * **Method:**
   
   `PUT`
   
-*  **URL Params**
-
-   **Required:**
- 
-   `id=[integer]`
-   
 * **Data Params**
-  <_Content-type must be `application/x-www-form-urlencoded` _>
-
   **Required:**
   
-  `password=[string]`
+  `{
+   	"password":[string]
+   }`
 
 
 * **Success Response:**
@@ -347,7 +505,18 @@
                     "password": "1234"
                   }`
                   
+* **Error Response:**
 
+  <_인증되지 않았을때_>
+
+  * **Code:** 401 UNAUTHORIZED
+    **Content:** `{
+                    "timestamp": 1497081723425,
+                    "status": 401,
+                    "error": "Unauthorized",
+                    "message": "Full authentication is required to access this resource",
+                    "path": "/restaurant"
+                  }`
 **login**
 ----
   ID/PW로 로그인한다 
@@ -374,4 +543,17 @@
                     "id": 4,
                     "name": "test11",
                     "password": "1234"
+                  }`
+                  
+* **Error Response:**
+
+  <_인증되지 않았을때_>
+
+  * **Code:** 401 UNAUTHORIZED
+    **Content:** `{
+                    "timestamp": 1497081723425,
+                    "status": 401,
+                    "error": "Unauthorized",
+                    "message": "Full authentication is required to access this resource",
+                    "path": "/restaurant"
                   }`
