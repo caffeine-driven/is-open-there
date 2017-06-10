@@ -44,15 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .antMatchers("/css/**", "/index").permitAll()
                     .mvcMatchers(HttpMethod.GET, "/**").permitAll()
                     .mvcMatchers(HttpMethod.POST, "/user").permitAll()
-                    .mvcMatchers("/user/me/**").authenticated()
+                .mvcMatchers(HttpMethod.POST, "/auth/login**").permitAll()
                     .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/user/login").permitAll()
-                    //여기 어떻게 해결해야 함
-                    .defaultSuccessUrl("/user/me.json")
-                    .and()
-                .logout().permitAll()
                     .and()
                     .csrf().disable()
                     .exceptionHandling().authenticationEntryPoint(authEntryPoint);
