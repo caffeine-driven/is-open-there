@@ -17,7 +17,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -111,8 +110,8 @@ public class RestaurantServiceImplTest {
         restaurant.setId(restaurantId);
         restaurant.setImage("/static/test/test-img.jpg");
         restaurant.setName("test restaurant");
-        restaurant.setStartTime(new GregorianCalendar(0, 0, 0, 9, 30));
-        restaurant.setEndTime(new GregorianCalendar(0, 0, 0, 18, 30));
+        restaurant.setStartTime("09:30");
+        restaurant.setEndTime("18:30");
 
         Restaurant restaurantForUpdate = new Restaurant();
         restaurantForUpdate.setId(restaurantId);
@@ -137,6 +136,16 @@ public class RestaurantServiceImplTest {
         Restaurant mockRestaurant = mock(Restaurant.class);
 
         sut.addRestaurant(mockRestaurant);
+    }
+
+    @Test(expected = RestaurantNotExistException.class)
+    public void testUpdateNotExistRestaurant() throws Exception {
+        Restaurant mockRestaurant = mock(Restaurant.class);
+        Integer restaurantId = 1;
+        when(mockRestaurant.getId()).thenReturn(restaurantId);
+        when(restaurantRepository.findOne(restaurantId)).thenReturn(null);
+
+        sut.updateRestaurant(mockRestaurant);
     }
 
     @After

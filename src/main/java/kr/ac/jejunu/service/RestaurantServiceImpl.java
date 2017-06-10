@@ -73,6 +73,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Restaurant updateRestaurant(Restaurant restaurant) {
         Restaurant originalRestaurant = restaurantRepository.findOne(restaurant.getId());
 
+        if (originalRestaurant == null)
+            throw new RestaurantNotExistException();
+
         originalRestaurant.setName(
                 restaurant.getName() == null ? originalRestaurant.getName() : restaurant.getName()
         );

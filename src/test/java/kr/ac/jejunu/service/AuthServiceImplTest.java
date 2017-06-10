@@ -1,29 +1,25 @@
 package kr.ac.jejunu.service;
 
-import kr.ac.jejunu.model.Restaurant;
 import kr.ac.jejunu.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -79,14 +75,11 @@ public class AuthServiceImplTest {
     public void testValidLogin() throws Exception {
         UserDetails mockUserDetails = mock(UserDetails.class);
         when(userDetailsService.loadUserByUsername(anyString())).thenReturn(mockUserDetails);
-        when(authenticationManager.authenticate(ArgumentMatchers.any(Authentication.class))).then(new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                Authentication authentication = (Authentication) invocation.getArguments()[0];
-                Authentication spy = spy(authentication);
-                when(spy.isAuthenticated()).thenReturn(true);
-                return null;
-            }
+        when(authenticationManager.authenticate(ArgumentMatchers.any(Authentication.class))).then(invocation -> {
+            Authentication authentication = (Authentication) invocation.getArguments()[0];
+            Authentication spy = spy(authentication);
+            when(spy.isAuthenticated()).thenReturn(true);
+            return null;
         });
 
         sut.authByUser(user);
