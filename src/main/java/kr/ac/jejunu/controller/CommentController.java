@@ -1,12 +1,12 @@
 package kr.ac.jejunu.controller;
 
+import kr.ac.jejunu.exceptions.UnAuthorizedException;
 import kr.ac.jejunu.model.Comment;
 import kr.ac.jejunu.model.User;
+import kr.ac.jejunu.service.AuthService;
 import kr.ac.jejunu.service.CommentService;
 import kr.ac.jejunu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,16 +25,20 @@ public class CommentController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthService authService;
+
     @GetMapping("/{restaurantId}")
     public List<Comment> getCommentOfRestaurant(@PathVariable Integer restaurantId){
         return commentService.getCommentOfRestaurant(restaurantId);
     }
 
     @PostMapping("/{restaurantId}")
-    public Map<String, Boolean> addComment(@PathVariable Integer restaurantId, @RequestBody Comment comment) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public Map<String, Boolean> addComment(@PathVariable Integer restaurantId, @RequestBody Comment comment) throws UnAuthorizedException {
+        User user = authService.getAuthenticatedUser();
 
-        User user = userService.getUserByUsername(auth.getName());
+        if (user == null)
+            throw new UnAuthorizedException();
 
         commentService.addCommentForRestaurant(comment, user, restaurantId);
 
