@@ -18,7 +18,7 @@ public class Comment {
     private Integer id;
     private String text;
     private Date date;
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "writer_id")
     @ManyToOne
     private User writer;
     @JoinColumn(name = "restaurant_id")
