@@ -535,13 +535,14 @@
                     "message": "Full authentication is required to access this resource",
                     "path": "/restaurant"
                   }`
+
 **login**
 ----
   ID/PW로 로그인한다 
 
 * **URL**
 
-  /user/login
+  /auth/login
 
 * **Method:**
   
@@ -550,10 +551,12 @@
 *  **URL Params**
 
    **Required:**
- 
-   `username=[string]`
-   
-   `password=[string]`
+   `
+   {
+   	"name":[string],
+   	"password":[string]
+   }
+   `
 
 * **Success Response:**
   * **Code:** 200 <br />
