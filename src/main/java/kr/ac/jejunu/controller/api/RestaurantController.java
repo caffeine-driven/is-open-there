@@ -1,15 +1,15 @@
-package kr.ac.jejunu.controller;
+package kr.ac.jejunu.controller.api;
 
 import kr.ac.jejunu.model.Restaurant;
-import kr.ac.jejunu.repository.RestaurantRepository;
 import kr.ac.jejunu.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by ghost9087 on 06/06/2017.
  */
 @RestController
-@RequestMapping("/restaurant")
+@RequestMapping("/api//restaurant")
 public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;

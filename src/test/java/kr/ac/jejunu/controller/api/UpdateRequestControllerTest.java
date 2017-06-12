@@ -1,7 +1,6 @@
-package kr.ac.jejunu.controller;
+package kr.ac.jejunu.controller.api;
 
-import kr.ac.jejunu.model.User;
-import kr.ac.jejunu.service.UserService;
+import kr.ac.jejunu.service.RestaurantService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,24 +15,22 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Created by ghost9087 on 09/06/2017.
+ * Created by ghost9087 on 10/06/2017.
  */
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
 @ContextConfiguration
-public class UserControllerTest {
+public class UpdateRequestControllerTest {
     @Mock
-    private UserService userService;
+    private RestaurantService restaurantService;
 
     @InjectMocks
-    private UserController userController;
+    private UpdateRequestController updateRequestController;
 
     private MockMvc mockMvc;
 
@@ -41,26 +38,18 @@ public class UserControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(updateRequestController).build();
     }
 
     @Test
-    public void testAddUser() throws Exception {
-        User mockUser = new User();
-        mockUser.setName("test_user1");
-        mockUser.setPassword("1234");
-        mockUser.setId(1);
-        when(userService.addUser(any(User.class))).thenReturn(mockUser);
-
+    public void testUpdateRequest() throws Exception {
         mockMvc.perform(
-                post("/user")
+                post("/api//update-request")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"test_user1\", \"password\": \"1234\"}")
+                        .content("{\"restaurant-id\": 4}")
                         .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("test_user1"))
-                .andExpect(jsonPath("$.password").value("1234"));
+                .andExpect(jsonPath("$.result").value(true));
     }
 }

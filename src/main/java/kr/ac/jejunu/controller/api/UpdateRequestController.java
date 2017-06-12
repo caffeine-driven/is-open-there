@@ -1,4 +1,4 @@
-package kr.ac.jejunu.controller;
+package kr.ac.jejunu.controller.api;
 
 import kr.ac.jejunu.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by ghost9087 on 06/06/2017.
  */
 @RestController
-@RequestMapping("/update-request")
+@RequestMapping("/api//update-request")
 public class UpdateRequestController {
     @Autowired
     private RestaurantService restaurantService;

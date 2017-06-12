@@ -1,4 +1,4 @@
-package kr.ac.jejunu.controller;
+package kr.ac.jejunu.controller.api;
 
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.service.AuthService;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by ghost9087 on 07/06/2017.
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api//user")
 public class UserController {
     @Autowired
     private UserService userService;

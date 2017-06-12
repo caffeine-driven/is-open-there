@@ -1,4 +1,4 @@
-package kr.ac.jejunu.controller;
+package kr.ac.jejunu.controller.api;
 
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.service.AuthService;
@@ -35,7 +35,7 @@ public class AuthControllerTest {
     @Test
     public void testLogin() throws Exception {
         mockMvc.perform(
-                post("/auth/login")
+                post("/api//auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"test_user1\", \"password\": \"1234\"}")
                         .accept(MediaType.APPLICATION_JSON)
@@ -50,7 +50,7 @@ public class AuthControllerTest {
         doThrow(AuthenticationException.class).when(authService).authByUser(any(User.class));
 
         mockMvc.perform(
-                post("/auth/login")
+                post("/api//auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"test_user1\", \"password\": \"1234\"}")
                         .accept(MediaType.APPLICATION_JSON)

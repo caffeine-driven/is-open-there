@@ -1,4 +1,4 @@
-package kr.ac.jejunu.controller;
+package kr.ac.jejunu.controller.api;
 
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.service.AuthService;
@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by ghost9087 on 09/06/2017.
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     private AuthService authService;

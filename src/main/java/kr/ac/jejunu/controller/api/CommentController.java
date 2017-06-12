@@ -1,4 +1,4 @@
-package kr.ac.jejunu.controller;
+package kr.ac.jejunu.controller.api;
 
 import kr.ac.jejunu.exceptions.UnAuthorizedException;
 import kr.ac.jejunu.model.Comment;
@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by ghost9087 on 08/06/2017.
  */
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/api//comment")
 public class CommentController {
     @Autowired
     private CommentService commentService;
