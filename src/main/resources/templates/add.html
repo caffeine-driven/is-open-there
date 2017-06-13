@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/restaurant/add}" id="restaurant-form" method="post" enctype="multipart/form-data">
+    <label for="name">이름</label>
+    <input type="text" name="name" id="name"/>
+    <label for="startTime">영업시작시간</label>
+    <input type="time" name="startTime" id="startTime"/>
+    <label for="endTime">영업종료시간</label>
+    <input type="time" name="endTime" id="endTime"/>
+    <label for="image">이미지</label>
+    <input type="file" name="image-file" id="image"/>
+    <button type="submit" th:value="추가하기">추가하기</button>
+    <button type="button" th:value="취소">취소</button>
+</form>
+
+</body>
+</html>

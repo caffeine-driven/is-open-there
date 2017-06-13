@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+
+<form th:action="@{/restaurant/edit/{restaurantId}(restaurantId=${restaurant.id})}" id="restaurant-form" method="post">
+    <label for="name">이름</label>
+    <input type="text" name="name" id="name" th:value="${restaurant.name}"/>
+    <label for="startTime">영업시작시간</label>
+    <input type="time" name="startTime" id="startTime" th:value="${restaurant.startTime}"/>
+    <label for="endTime">영업종료시간</label>
+    <input type="time" name="endTime" id="endTime" th:value="${restaurant.endTime}"/>
+    <button type="submit" th:value="저장하기">저장하기</button>
+    <button type="button" th:value="취소">취소</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+<h1>거기 열었나요?</h1>
+<div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
+    <form action="#" th:action="@{/auth/logout}" method="post">
+        <input type="submit" value="로그아웃"/>
+    </form>
+</div>
+<a th:fragment="login" class="login" sec:authorize="!isAuthenticated()" th:href="@{/auth/login}">로그인</a>
+<a th:href="@{/restaurant/add}">식당추가</a>
+<div>
+    <div th:each="restaurant: ${restaurantList}">
+        <a th:href="@{/restaurant/detail/{restaurantId}(restaurantId=${restaurant.id})}">
+            <img th:src="${restaurant.image}"/>
+            <span th:text="${restaurant.name}">name</span>
+            <form action="#" th:action="@{/restaurant/update-request}" method="post" enctype="multipart/form-data">
+                <input type="hidden" th:value="${restaurant.id}"/>
+                <input th:if="${restaurant.open} == true" type="submit" value="close"/>
+                <input th:if="${restaurant.open} != true" type="submit" value="open"/>
+            </form>
+            <span th:if="${restaurant.open} == true">영업중</span>
+            <span th:if="${restaurant.open} != true">영업중지</span>
+        </a>
+    </div>
+</div>
+</body>
+</html>

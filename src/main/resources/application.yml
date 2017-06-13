@@ -1,7 +1,7 @@
 spring:
   thymeleaf:
     cache: false
-    suffix: .jsp
+    suffix: .html
   datasource:
     url: jdbc:mysql://localhost/is_open_there?characterEncoding=utf8
     username: is_open_there

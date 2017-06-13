@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<img th:src="${restaurant.image}"/>
+<span th:text="${restaurant.name}">name</span>
+<span th:text="${restaurant.startTime}">startTime</span>
+<span th:text="${restaurant.endTime}">endTime</span>
+<form action="#" th:action="@{/restaurant/update-request}" method="post" enctype="multipart/form-data">
+    <input th:name="restaurant-id" type="hidden" th:value="${restaurant.id}"/>
+    <input th:if="${restaurant.open} == true" type="submit" value="close"/>
+    <input th:if="${restaurant.open} != true" type="submit" value="open"/>
+</form>
+<span th:if="${restaurant.open} == true">영업중</span>
+<span th:if="${restaurant.open} != true">영업중지</span>
+<div>
+    <div th:each="comment: ${comments}">
+        <span th:text="${comment.writer.name}">name</span>
+        <span th:text="${comment.text}">name</span>
+        <span th:text="${#calendars.format(comment.date, 'yy-MM-dd HH:mm')}">date</span>
+        <form th:action="@{/comment/{restaurantId}/{commentId}(restaurantId=${restaurant.id}, commentId=${comment.id})}"
+              method="post">
+            <input type="submit" th:value="삭제"/>
+        </form>
+    </div>
+    <form th:action="@{/comment/{restaurantId}(restaurantId=${restaurant.id})}" method="post">
+        <label for="text">댓글</label>
+        <input type="text" name="text" id="text"/>
+        <input type="submit" th:value="추가"/>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div>뒤로가기</div>
+<p th:if="${loginError}" class="error">Wrong user or password</p>
+<form th:action="@{/auth/login}" method="post">
+    <label for="username">id</label>:
+    <input type="text" id="username" name="username" autofocus="autofocus"/> <br/>
+    <label for="password">Password</label>:
+    <input type="password" id="password" name="password"/> <br/>
+    <input type="submit" value="로그인"/>
+    <a th:href="@{/auth/sign-up}">회원가입</a>
+</form>
+</body>
+</html>

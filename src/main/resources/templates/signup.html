@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<form th:action="@{/signup}" method="post">
+    <label for="username">id</label>:
+    <input type="text" id="username" name="username" autofocus="autofocus"/> <br/>
+    <label for="password">Password</label>:
+    <input type="password" id="password" name="password"/> <br/>
+    <input type="submit" value="회원가입"/>
+    <a href="/">취소(홈으로)</a>
+</form>
+</body>
+</html>

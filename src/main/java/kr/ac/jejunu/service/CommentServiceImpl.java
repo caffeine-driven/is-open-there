@@ -1,5 +1,6 @@
 package kr.ac.jejunu.service;
 
+import kr.ac.jejunu.exceptions.ForbiddenException;
 import kr.ac.jejunu.exceptions.RestaurantNotExistException;
 import kr.ac.jejunu.model.Comment;
 import kr.ac.jejunu.model.Restaurant;
@@ -25,6 +26,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private AuthService authService;
 
     @Override
     public void addCommentForRestaurant(@NotNull Comment comment, @NotNull User user, @NotNull Integer restaurantId) {
@@ -55,6 +59,13 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(Integer commentId) {
-        commentRepository.delete(commentId);
+        User currentUser = authService.getAuthenticatedUser();
+
+        Comment comment = commentRepository.findOne(commentId);
+
+        if (currentUser.getId().equals(comment.getWriter().getId()))
+            commentRepository.delete(commentId);
+        else
+            throw new ForbiddenException();
     }
 }
