@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by ghost9087 on 06/06/2017.
  */
 @RestController
-@RequestMapping("/api//update-request")
+@RequestMapping("/api/update-request")
 public class UpdateRequestController {
     @Autowired
     private RestaurantService restaurantService;

@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by ghost9087 on 08/06/2017.
  */
 @RestController
-@RequestMapping("/api//comment")
+@RequestMapping("/api/comment")
 public class CommentController {
     @Autowired
     private CommentService commentService;

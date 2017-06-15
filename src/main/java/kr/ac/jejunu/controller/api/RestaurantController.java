@@ -1,14 +1,12 @@
 package kr.ac.jejunu.controller.api;
 
+import kr.ac.jejunu.handler.FileHandler;
 import kr.ac.jejunu.model.Restaurant;
 import kr.ac.jejunu.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +16,13 @@ import java.util.Map;
  * Created by ghost9087 on 06/06/2017.
  */
 @RestController
-@RequestMapping("/api//restaurant")
+@RequestMapping("/api/restaurant")
 public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
+
+    @Autowired
+    private FileHandler fileHandler;
 
     @GetMapping
     public List<Restaurant> restaurantList(){
@@ -35,13 +36,9 @@ public class RestaurantController {
 
     @PostMapping
     public Restaurant addRestaurant(@ModelAttribute Restaurant restaurant, @RequestParam("image-file") MultipartFile file) throws IOException {
-        //TODO: 이거 어디로 뺄것
-        FileOutputStream fileOutputStream = new FileOutputStream(new File("src/main/resources/static/" + file.getOriginalFilename()));
-        BufferedOutputStream outputStream = new BufferedOutputStream(fileOutputStream);
-        outputStream.write(file.getBytes());
-        outputStream.close();
+        String fileName = fileHandler.handleUploadedFile(file);
 
-        restaurant.setImage("/"+file.getOriginalFilename());
+        restaurant.setImage("/" + fileName);
 
         return restaurantService.addRestaurant(restaurant);
     }

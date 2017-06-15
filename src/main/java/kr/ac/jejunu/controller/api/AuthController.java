@@ -22,8 +22,8 @@ public class AuthController {
     @PostMapping("/login")
     public Map<String, Boolean> login(@RequestBody User user){
         authService.authByUser(user);
-        System.out.println(authService);
 
+        //TODO: 이부분 중복 제거
         Map<String, Boolean> resultMap = new HashMap<>();
         resultMap.put("result", true);
 
