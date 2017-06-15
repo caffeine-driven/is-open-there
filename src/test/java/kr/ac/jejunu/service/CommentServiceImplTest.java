@@ -16,12 +16,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsEmptyCollection.emptyCollectionOf;
-
 
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsEmptyCollection.emptyCollectionOf;
 import static org.mockito.Mockito.*;
 
 /**
@@ -46,6 +45,11 @@ public class CommentServiceImplTest {
         public RestaurantRepository restaurantRepository() {
             return mock(RestaurantRepository.class);
         }
+
+        @Bean
+        public AuthService authService() {
+            return mock(AuthService.class);
+        }
     }
 
     @Autowired
@@ -56,6 +60,9 @@ public class CommentServiceImplTest {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private AuthService authService;
 
     private Restaurant mockRestaurant;
 
@@ -68,6 +75,7 @@ public class CommentServiceImplTest {
         Integer mockRestaurantId = 1;
         when(mockRestaurant.getId()).thenReturn(mockRestaurantId);
         when(restaurantRepository.findOne(anyInt())).thenReturn(mockRestaurant);
+        when(authService.getAuthenticatedUser()).thenReturn(mockUser);
     }
 
     @After
