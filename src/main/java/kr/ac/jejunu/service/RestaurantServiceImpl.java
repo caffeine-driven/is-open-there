@@ -63,6 +63,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Restaurant addRestaurant(Restaurant restaurant) {
         try {
             restaurant.setOpen(false);
+            restaurant.setRecommendation(0);
             return restaurantRepository.save(restaurant);
         } catch (DataIntegrityViolationException e) {
             throw new ObjectDuplicatedException("duplicated name on restaurant");
