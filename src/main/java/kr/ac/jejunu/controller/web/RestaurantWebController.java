@@ -58,7 +58,7 @@ public class RestaurantWebController {
         return "add";
     }
 
-    @PostMapping("/restaurant//add")
+    @PostMapping("/restaurant/add")
     public String addRestaurant(@ModelAttribute Restaurant restaurant, @RequestParam("image-file") MultipartFile file) throws IOException {
         String fileName = fileHandler.handleUploadedFile(file);
 
