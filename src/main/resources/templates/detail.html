@@ -6,10 +6,11 @@
 </head>
 <body>
 <img th:src="${restaurant.image}"/>
-<span th:text="${restaurant.name}">name</span>
-<span th:text="${restaurant.startTime}">startTime</span>
-<span th:text="${restaurant.endTime}">endTime</span>
-<span th:text="${restaurant.recommendation}">recommendation</span>
+<br/>
+<p th:text="'이름: '+${restaurant.name}">name</p>
+<p th:text="'시작시간: '+${restaurant.startTime}">startTime</p>
+<p th:text="'종료시간: '+${restaurant.endTime}">endTime</p>
+<p th:text="'추천: '+${restaurant.recommendation}">recommendation</p>
 <form action="#" th:action="@{/restaurant/recommend/{restaurantId}(restaurantId=${restaurant.id})}" method="post"
       enctype="multipart/form-data">
     <input th:if="${restaurant.open} != true" type="submit" value="추천"/>
@@ -19,13 +20,15 @@
     <input th:if="${restaurant.open} == true" type="submit" value="close"/>
     <input th:if="${restaurant.open} != true" type="submit" value="open"/>
 </form>
-<span th:if="${restaurant.open} == true">영업중</span>
-<span th:if="${restaurant.open} != true">영업중지</span>
+<p th:if="${restaurant.open} == true">영업중</p>
+<p th:if="${restaurant.open} != true">영업중지</p>
+<a th:href="@{/restaurant/edit/{restaurantId}(restaurantId=${restaurant.id})}">수정</a>
 <div>
+    <p>==========댓글=========</p>
     <div th:each="comment: ${comments}">
-        <span th:text="${comment.writer.name}">name</span>
-        <span th:text="${comment.text}">name</span>
-        <span th:text="${#calendars.format(comment.date, 'yy-MM-dd HH:mm')}">date</span>
+        <p th:text="'작성자: '+${comment.writer.name}">name</p>
+        <p th:text="'내용: '+${comment.text}">name</p>
+        <p th:text="'작성시간: '+${#calendars.format(comment.date, 'yy-MM-dd HH:mm')}">date</p>
         <form th:action="@{/comment/{restaurantId}/{commentId}(restaurantId=${restaurant.id}, commentId=${comment.id})}"
               method="post">
             <input type="submit" th:value="삭제"/>

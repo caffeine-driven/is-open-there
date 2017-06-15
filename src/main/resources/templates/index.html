@@ -14,14 +14,15 @@
     <div th:each="restaurant: ${restaurantList}">
         <a th:href="@{/restaurant/detail/{restaurantId}(restaurantId=${restaurant.id})}">
             <img th:src="${restaurant.image}"/>
-            <span th:text="${restaurant.name}">name</span>
+            <br/>
+            <p th:text="'이름: '+${restaurant.name}">name</p>
             <form action="#" th:action="@{/restaurant/update-request}" method="post" enctype="multipart/form-data">
                 <input type="hidden" th:value="${restaurant.id}"/>
                 <input th:if="${restaurant.open} == true" type="submit" value="close"/>
                 <input th:if="${restaurant.open} != true" type="submit" value="open"/>
             </form>
-            <span th:if="${restaurant.open} == true">영업중</span>
-            <span th:if="${restaurant.open} != true">영업중지</span>
+            <p th:if="${restaurant.open} == true">영업중</p>
+            <p th:if="${restaurant.open} != true">영업중지</p>
         </a>
     </div>
 </div>
