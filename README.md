@@ -4,7 +4,7 @@
 
 * **URL**
 
-  /restaurant
+  /api/restaurant
 
 * **Method:**
   
@@ -37,7 +37,7 @@
 
 * **URL**
 
-  /restaurant/:id
+  /api/restaurant/:id
 
 * **Method:**
   
@@ -66,7 +66,7 @@
 
 * **URL**
 
-  /restaurant/
+  /api/restaurant/
 
 * **Method:**
   
@@ -129,7 +129,7 @@
 
 * **URL**
 
-  /restaurant/:id
+  /api/restaurant/:id
 
 * **Method:**
   
@@ -204,7 +204,7 @@
 
 * **URL**
 
-  /restaurant/:id
+  /api/restaurant/:id
 
 * **Method:**
   
@@ -241,7 +241,7 @@
 
 * **URL**
 
-  /update-request/
+  /api/update-request/
 
 * **Method:**
   
@@ -293,7 +293,7 @@
 
 * **URL**
 
-  /comment/:id
+  /api/comment/:id
 
 * **Method:**
   
@@ -333,7 +333,7 @@
 
 * **URL**
 
-  /comment/
+  /api/comment/
 
 * **Method:**
   
@@ -385,7 +385,7 @@
 
 * **URL**
 
-  /comment/:id
+  /api/comment/:id
 
 * **Method:**
   
@@ -422,7 +422,7 @@
 
 * **URL**
 
-  /user/:id
+  /api/user/:id
 
 * **Method:**
   
@@ -459,7 +459,7 @@
 
 * **URL**
 
-  /user/
+  /api/user/
 
 * **Method:**
   
@@ -501,7 +501,7 @@
 
 * **URL**
 
-  /user
+  /api/user
 
 * **Method:**
   
@@ -542,7 +542,7 @@
 
 * **URL**
 
-  /auth/login
+  /api/auth/login
 
 * **Method:**
   
