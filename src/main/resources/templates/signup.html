@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <body>
-<form th:action="@{/signup}" method="post">
-    <label for="username">id</label>:
-    <input type="text" id="username" name="username" autofocus="autofocus"/> <br/>
+<p th:if="${error}" class="error" th:text="'error: '+${message}"></p>
+<form th:action="@{/auth/sign-up}" method="post">
+    <label for="name">id</label>:
+    <input type="text" id="name" name="name" autofocus="autofocus"/> <br/>
     <label for="password">Password</label>:
     <input type="password" id="password" name="password"/> <br/>
     <input type="submit" value="회원가입"/>
