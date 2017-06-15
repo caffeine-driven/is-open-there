@@ -1,7 +1,6 @@
 package kr.ac.jejunu.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.Http401AuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
 /**
  * Created by ghost9087 on 07/06/2017.
@@ -23,18 +21,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    private AuthenticationEntryPoint authEntryPoint;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
-    }
-
-    @Bean
-    public AuthenticationEntryPoint securityException401EntryPoint(){
-
-        return new Http401AuthenticationEntryPoint("Bearer realm=\"webrealm\"");
     }
 
     @Override
@@ -46,16 +35,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .mvcMatchers(HttpMethod.GET, "/**").permitAll()
                     .mvcMatchers(HttpMethod.POST, "/user").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/api/auth/login**").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/auth/sign-up").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/auth/login").failureUrl("/auth/login-error")
                 .and()
                 .logout()
+                .logoutUrl("/auth/logout")
                 .logoutSuccessUrl("/")
-                    .and()
-                    .csrf().disable()
-                    .exceptionHandling().authenticationEntryPoint(authEntryPoint);
+                .and()
+                .csrf().disable();
     }
 
     @Autowired
