@@ -1,6 +1,7 @@
 package kr.ac.jejunu.controller.api;
 
 import kr.ac.jejunu.exceptions.UnAuthorizedException;
+import kr.ac.jejunu.model.ActionResult;
 import kr.ac.jejunu.model.Comment;
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.service.AuthService;
@@ -9,9 +10,7 @@ import kr.ac.jejunu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ghost9087 on 08/06/2017.
@@ -34,7 +33,7 @@ public class CommentController {
     }
 
     @PostMapping("/{restaurantId}")
-    public Map<String, Boolean> addComment(@PathVariable Integer restaurantId, @RequestBody Comment comment) throws UnAuthorizedException {
+    public ActionResult addComment(@PathVariable Integer restaurantId, @RequestBody Comment comment) throws UnAuthorizedException {
         User user = authService.getAuthenticatedUser();
 
         if (user == null)
@@ -42,19 +41,13 @@ public class CommentController {
 
         commentService.addCommentForRestaurant(comment, user, restaurantId);
 
-        Map<String, Boolean> resultMap = new HashMap<>();
-        resultMap.put("result", true);
-
-        return resultMap;
+        return new ActionResult(true);
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Boolean> deleteComment(@PathVariable Integer commentId){
+    public ActionResult deleteComment(@PathVariable Integer commentId) {
         commentService.deleteComment(commentId);
 
-        Map<String, Boolean> resultMap = new HashMap<>();
-        resultMap.put("result", true);
-
-        return resultMap;
+        return new ActionResult(true);
     }
 }

@@ -1,6 +1,7 @@
 package kr.ac.jejunu.controller.api;
 
 import kr.ac.jejunu.handler.FileHandler;
+import kr.ac.jejunu.model.ActionResult;
 import kr.ac.jejunu.model.Restaurant;
 import kr.ac.jejunu.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ghost9087 on 06/06/2017.
@@ -50,12 +49,9 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Boolean> deleteRestaurant(@PathVariable Integer id){
+    public ActionResult deleteRestaurant(@PathVariable Integer id) {
         restaurantService.deleteRestaurantById(id);
 
-        Map<String, Boolean> resultMap = new HashMap<>();
-        resultMap.put("result", true);
-
-        return resultMap;
+        return new ActionResult(true);
     }
 }

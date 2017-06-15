@@ -1,14 +1,12 @@
 package kr.ac.jejunu.controller.api;
 
+import kr.ac.jejunu.model.ActionResult;
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by ghost9087 on 09/06/2017.
@@ -20,24 +18,17 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public Map<String, Boolean> login(@RequestBody User user){
+    public ActionResult login(@RequestBody User user) {
         authService.authByUser(user);
 
-        //TODO: 이부분 중복 제거
-        Map<String, Boolean> resultMap = new HashMap<>();
-        resultMap.put("result", true);
-
-        return resultMap;
+        return new ActionResult(true);
     }
 
     @PostMapping("logout")
-    public Map<String, Boolean> logout(){
+    public ActionResult logout() {
         authService.deauthorize();
 
-        Map<String, Boolean> resultMap = new HashMap<>();
-        resultMap.put("result", true);
-
-        return resultMap;
+        return new ActionResult(true);
     }
 
     @ExceptionHandler(AuthenticationException.class)
