@@ -54,4 +54,11 @@ public class RestaurantController {
 
         return new ActionResult(true);
     }
+
+    @PostMapping("/recommend/{id}")
+    public ActionResult recommendRestaurant(@PathVariable Integer id) {
+        restaurantService.increaseRecommendation(id);
+
+        return new ActionResult(true);
+    }
 }

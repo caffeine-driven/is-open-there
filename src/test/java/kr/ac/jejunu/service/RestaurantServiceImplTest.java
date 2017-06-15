@@ -146,6 +146,33 @@ public class RestaurantServiceImplTest {
         when(restaurantRepository.findOne(restaurantId)).thenReturn(null);
 
         sut.updateRestaurant(mockRestaurant);
+
+        verify(mockRestaurant, times(1));
+    }
+
+    @Test
+    public void testIncreaseRecommendation() throws Exception {
+        Restaurant mockRestaurant = mock(Restaurant.class);
+        when(restaurantRepository.findOne(anyInt())).thenReturn(mockRestaurant);
+        when(mockRestaurant.getRecommendation()).thenReturn(1);
+        when(mockRestaurant.getId()).thenReturn(1);
+
+        sut.increaseRecommendation(mockRestaurant.getId());
+
+        verify(mockRestaurant, times(1))
+                .setRecommendation(2);
+        verify(restaurantRepository, times(1)).findOne(mockRestaurant.getId());
+        verify(restaurantRepository, times(1)).save(mockRestaurant);
+    }
+
+    @Test(expected = RestaurantNotExistException.class)
+    public void testIncreaseRecommendationOnNonExistRestaurant() throws Exception {
+        Restaurant mockRestaurant = mock(Restaurant.class);
+        when(restaurantRepository.findOne(anyInt())).thenReturn(null);
+        when(mockRestaurant.getRecommendation()).thenReturn(1);
+        when(mockRestaurant.getId()).thenReturn(1);
+
+        sut.increaseRecommendation(mockRestaurant.getId());
     }
 
     @After

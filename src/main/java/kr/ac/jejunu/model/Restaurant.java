@@ -22,6 +22,7 @@ public class Restaurant {
 
     private String startTime;
     private String endTime;
+    private Integer recommendation;
 
     @Override
     public String toString() {

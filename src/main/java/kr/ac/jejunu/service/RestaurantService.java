@@ -14,4 +14,6 @@ public interface RestaurantService {
     Restaurant addRestaurant(Restaurant restaurant);
     Restaurant updateRestaurant(Restaurant restaurant);
     void deleteRestaurantById(Integer id);
+
+    void increaseRecommendation(Integer id);
 }

@@ -9,6 +9,11 @@
 <span th:text="${restaurant.name}">name</span>
 <span th:text="${restaurant.startTime}">startTime</span>
 <span th:text="${restaurant.endTime}">endTime</span>
+<span th:text="${restaurant.recommendation}">recommendation</span>
+<form action="#" th:action="@{/restaurant/recommend/{restaurantId}(restaurantId=${restaurant.id})}" method="post"
+      enctype="multipart/form-data">
+    <input th:if="${restaurant.open} != true" type="submit" value="추천"/>
+</form>
 <form action="#" th:action="@{/restaurant/update-request}" method="post" enctype="multipart/form-data">
     <input th:name="restaurant-id" type="hidden" th:value="${restaurant.id}"/>
     <input th:if="${restaurant.open} == true" type="submit" value="close"/>

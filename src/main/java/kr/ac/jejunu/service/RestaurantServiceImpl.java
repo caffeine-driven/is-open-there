@@ -93,4 +93,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void deleteRestaurantById(Integer id) {
         restaurantRepository.delete(id);
     }
+
+    @Override
+    public void increaseRecommendation(Integer id) {
+        Restaurant restaurant = restaurantRepository.findOne(id);
+
+        if (restaurant == null)
+            throw new RestaurantNotExistException();
+
+        restaurant.setRecommendation(restaurant.getRecommendation() + 1);
+        restaurantRepository.save(restaurant);
+    }
 }

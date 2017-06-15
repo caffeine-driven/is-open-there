@@ -101,4 +101,11 @@ public class RestaurantWebController {
 
         return "redirect:/restaurant/detail/" + restaurantId;
     }
+
+    @PostMapping("/restaurant/recommend/{id}")
+    public String recommendRestaurant(@PathVariable Integer id) {
+        restaurantService.increaseRecommendation(id);
+
+        return "redirect:/restaurant/detail/" + id;
+    }
 }
