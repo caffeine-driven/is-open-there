@@ -1,19 +1,11 @@
 package kr.ac.jejunu.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by ghost9087 on 06/06/2017.
  */
 @Entity
 @Table(name = "user")
-@Data
-@Accessors(chain = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +20,35 @@ public class User {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        if (name == null)
+            return "";
+        else
+            return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        if (password == null)
+            return "";
+        else
+            return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

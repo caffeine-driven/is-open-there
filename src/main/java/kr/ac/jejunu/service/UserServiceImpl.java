@@ -4,7 +4,6 @@ import kr.ac.jejunu.exceptions.ObjectDuplicatedException;
 import kr.ac.jejunu.model.User;
 import kr.ac.jejunu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +20,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User addUser(User user) {
-        try {
-            return saveUser(user);
-        } catch (DataIntegrityViolationException e) {
+        if (user.getName().isEmpty() || user.getPassword().isEmpty())
+            throw new IllegalArgumentException("username and password must not be empty");
+        User userWithSameName = userRepository.findByName(user.getName());
+
+        if (userWithSameName != null)
             throw new ObjectDuplicatedException("username aleady exist");
-        }
+
+        return saveUser(user);
     }
 
     @Override

@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -68,6 +67,7 @@ public class UserServiceImplTest {
 
     @Test
     public void testCreateUser() throws Exception {
+        when(userRepository.findByName(anyString())).thenReturn(null);
         String passwordInPlainText = "1234";
 
         user.setName("test");
@@ -82,8 +82,26 @@ public class UserServiceImplTest {
 
     @Test(expected = ObjectDuplicatedException.class)
     public void testCreateUserWithDuplicatedUserName() throws Exception {
-        User user = mock(User.class);
-        when(userRepository.save(user)).thenThrow(DataIntegrityViolationException.class);
+        User user = new User();
+        user.setName("test");
+        user.setPassword("1234");
+        when(userRepository.findByName(anyString())).thenReturn(mock(User.class));
+
+        sut.addUser(user);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateWithInvalidUsername() throws Exception {
+        User user = new User();
+        user.setPassword("1234");
+
+        sut.addUser(user);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateWithInvalidPassword() throws Exception {
+        User user = new User();
+        user.setName("test");
 
         sut.addUser(user);
     }
