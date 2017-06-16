@@ -14,7 +14,7 @@
     <label for="endTime">영업종료시간</label>
     <input type="time" name="endTime" id="endTime" th:value="${restaurant.endTime}"/>
     <button type="submit" th:value="저장하기">저장하기</button>
-    <button type="button" th:value="취소">취소</button>
+    <button type="button" th:value="취소" onclick="history.back();">취소</button>
 </form>
 </body>
 </html>

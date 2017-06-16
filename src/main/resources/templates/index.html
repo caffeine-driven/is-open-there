@@ -17,7 +17,7 @@
             <br/>
             <p th:text="'이름: '+${restaurant.name}">name</p>
             <form action="#" th:action="@{/restaurant/update-request}" method="post" enctype="multipart/form-data">
-                <input type="hidden" th:value="${restaurant.id}"/>
+                <input type="hidden" th:name="restaurant-id" th:value="${restaurant.id}"/>
                 <input th:if="${restaurant.open} == true" type="submit" value="close"/>
                 <input th:if="${restaurant.open} != true" type="submit" value="open"/>
             </form>
